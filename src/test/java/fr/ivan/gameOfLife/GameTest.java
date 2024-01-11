@@ -1,5 +1,6 @@
 package fr.ivan.gameOfLife;
 
+import fr.ivan.profiler.NoProfiler;
 import junit.framework.TestCase;
 import org.junit.Assert;
 
@@ -17,7 +18,7 @@ public class GameTest extends TestCase {
                 {false, false, false}
         };
 
-        Game game = new Game(grid1);
+        Game game = new Game(grid1, new NoProfiler());
 
         Assert.assertArrayEquals(empty3, game.nextIt());
     }
@@ -29,7 +30,7 @@ public class GameTest extends TestCase {
                 {false, false, false}
         };
 
-        Game game = new Game(grid);
+        Game game = new Game(grid, new NoProfiler());
 
         boolean[][] expected = new boolean[][] {
                 {true, true, false},
@@ -47,7 +48,7 @@ public class GameTest extends TestCase {
                 {false, false, false}
         };
 
-        Game game = new Game(grid);
+        Game game = new Game(grid, new NoProfiler());
 
         boolean[][] expected = new boolean[][] {
                 {false, true, false},
@@ -65,7 +66,7 @@ public class GameTest extends TestCase {
                 {false, false, false}
         };
 
-        Game game = new Game(grid);
+        Game game = new Game(grid, new NoProfiler());
 
         Assert.assertArrayEquals(grid, game.nextIt());
     }

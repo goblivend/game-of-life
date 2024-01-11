@@ -30,21 +30,21 @@ public class Main {
 
     static void runFor(String folder, String filename, int duration, int scale, Game game) throws IOException {
         for (int i = 0; i < duration; i++) {
-            ImageIO.write(Utils.toImg(game.nextIt(), scale), "png", new File(folder + "/" + filename + i + ".png"));
+            printGrid(game.nextIt());
+//            ImageIO.write(Utils.toImg(game.nextIt(), scale), "png", new File(folder + "/" + filename + i + ".png"));
         }
+        System.out.println(game);
     }
 
-
-
-
     public static void main(String[] args) throws IOException {
-        boolean[][] grid1 = new boolean[][] {
-                {false, true, false},
-                {false, true, false},
-                {false, true, false}
-        };
 
-        runFor("games", "game", 50, 30, new Game(grid1));
+        boolean[][] grid = new GameBuilder()
+                .add("line3", 0, 0)
+                .add("line3", 6, 6)
 
+
+                .build();
+
+        runFor("games", "game", 2, 30, new Game(grid, new TimeProfiler()));
     }
 }

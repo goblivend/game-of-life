@@ -1,18 +1,22 @@
 package fr.ivan.gameOfLife;
 
+import fr.ivan.profiler.Profiler;
+
 public class Game {
     private boolean[][] grid;
     private final int width;
     private final int height;
+    private final Profiler profiler;
 
-    public Game(boolean[][] grid) {
+    public Game(boolean[][] grid, Profiler profiler) {
         this.grid = grid;
         this.height = grid.length;
         assert height>0;
         this.width = grid[0].length;
-
+        this.profiler = profiler;
     }
     public boolean[][] nextIt() {
+        profiler.start("Game.nextIt");
         boolean[][] newGrid = new boolean[height][width];
 
         int[][] nbNeighbours = getNeighbours();
@@ -21,11 +25,12 @@ public class Game {
                 newGrid[y][x] = nbNeighbours[y][x] == 3 || (nbNeighbours[y][x] == 2 && grid[y][x]);
             }
         }
-
+        profiler.finish("Game.nextIt");
         return grid = newGrid;
     }
 
     private int[][] getNeighbours() {
+        profiler.start("Game.getNeighbours");
         int[][] nb = new int[height][width];
 
         for (int y = 0; y < height; y++) {
@@ -44,6 +49,12 @@ public class Game {
                 }
             }
         }
+        profiler.finish("Game.getNeighbours");
         return nb;
+    }
+
+    @Override
+    public String toString() {
+        return profiler.toString();
     }
 }
