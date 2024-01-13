@@ -9,42 +9,45 @@ public class Game {
     private final Profiler profiler;
 
     public Game(boolean[][] grid, Profiler profiler) {
+        this.profiler = profiler;
+        profiler.start("Game");
         this.grid = grid;
         this.height = grid.length;
         assert height>0;
         this.width = grid[0].length;
-        this.profiler = profiler;
+        profiler.finish("Game");
     }
     public boolean[][] nextIt() {
         profiler.start("Game.nextIt");
         boolean[][] newGrid = new boolean[height][width];
-
-        int[][] nbNeighbours = getNeighbours();
+        byte[][] nbNeighbours = getNeighbours();
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 newGrid[y][x] = nbNeighbours[y][x] == 3 || (nbNeighbours[y][x] == 2 && grid[y][x]);
             }
         }
         profiler.finish("Game.nextIt");
-        return grid = newGrid;
+        grid = newGrid;
+        System.gc();
+        return grid;
     }
 
-    private int[][] getNeighbours() {
+    private byte[][] getNeighbours() {
         profiler.start("Game.getNeighbours");
-        int[][] nb = new int[height][width];
+        System.out.println(Runtime.getRuntime().freeMemory());
+        byte[][] nb = new byte[height][width];
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
                 if (!grid[y][x])
                     continue;
-
-                for (int i = -1; i <= 1; i++) {
-                    for (int j = -1; j <= 1; j++) {
-                        if (i == 0 && j == 0)
+                for (int dy = -1; dy <= 1; dy++) {
+                    for (int dx = -1; dx <= 1; dx++) {
+                        if (dx == 0 && dy == 0)
                             continue;
-                        if (y+j < 0 || height <= y+j || x+i < 0 || width <= x+i)
+                        if (y+dy < 0 || height <= y+dy || x+dx < 0 || width <= x+dx)
                             continue;
-                        nb[y+j][x+i]++;
+                        nb[y+dy][x+dx]++;
                     }
                 }
             }

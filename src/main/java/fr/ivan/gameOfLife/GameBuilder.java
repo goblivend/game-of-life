@@ -1,10 +1,11 @@
 package fr.ivan.gameOfLife;
 
+import fr.ivan.gameOfLife.util.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static fr.ivan.gameOfLife.util.Utils.fromFile;
-import static fr.ivan.gameOfLife.util.Utils.move;
+import static fr.ivan.gameOfLife.util.Utils.*;
 
 public class GameBuilder {
     private final List<boolean[][]> patterns = new ArrayList<>();
@@ -19,7 +20,10 @@ public class GameBuilder {
     }
 
     public GameBuilder add(String file, int dx, int dy) {
-        return add(fromFile(getClass().getClassLoader().getResourceAsStream("patterns/" + file)), dx, dy);
+        if (file.endsWith(".rle"))
+            return add(fromRleFile(getClass().getClassLoader().getResourceAsStream("patterns/" + file)), dx, dy);
+        else
+         return add(fromFile(getClass().getClassLoader().getResourceAsStream("patterns/" + file)), dx, dy);
     }
 
     public boolean[][] build() {

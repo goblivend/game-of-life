@@ -4,9 +4,15 @@ import fr.ivan.profiler.*;
 import fr.ivan.gameOfLife.util.Utils;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.stream.Collectors;
+
+import static fr.ivan.gameOfLife.util.Utils.*;
+import static java.util.stream.Collectors.toList;
 
 public class Main {
 
@@ -28,23 +34,38 @@ public class Main {
         System.out.println("-".repeat(grid[0].length));
     }
 
-    static void runFor(String folder, String filename, int duration, int scale, Game game) throws IOException {
+    static void saveGrig(boolean[][] grid, byte scale, String file) throws IOException {
+        ImageIO.write(toImg(grid, scale), "png", new File(file));
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    static void runFor(String folder, String filename, int duration, byte scale, Game game) throws IOException {
         for (int i = 0; i < duration; i++) {
-            printGrid(game.nextIt());
-//            ImageIO.write(Utils.toImg(game.nextIt(), scale), "png", new File(folder + "/" + filename + i + ".png"));
+            saveGrig(game.nextIt(), scale, folder + "/" + filename + i + ".png");
         }
         System.out.println(game);
     }
 
     public static void main(String[] args) throws IOException {
+//        runFor("games", "game", 1000, (byte) 1, new Game(new GameBuilder()
+//                .add("meta_pixel_galaxy.rle", 0, 0)
+//                .add("meta_pixel_off.rle",    0, 0)
+//                .add("meta_pixel_off.rle", 2048, 0)
+//                .add("meta_pixel_off.rle", 4096, 0)
+//                .add("meta_pixel_on.rle",    0, 2048)
+//                .add("meta_pixel_on.rle", 2048, 2048)
+//                .add("meta_pixel_on.rle", 4096, 2048)
+//                .add("meta_pixel_off.rle",    0, 4096)
+//                .add("meta_pixel_off.rle", 2048, 4096)
+//                .add("meta_pixel_off.rle", 4096, 4096)
+//                .build(), new TimeProfiler()));
 
         boolean[][] grid = new GameBuilder()
-                .add("line3", 0, 0)
-                .add("line3", 6, 6)
-
-
+                .add("meta_pixel_on.rle", 0, 0)
                 .build();
+//        printGrid(grid);
 
-        runFor("games", "game", 2, 30, new Game(grid, new TimeProfiler()));
+        System.out.println(Utils.gridToRle(grid));
+
     }
 }
