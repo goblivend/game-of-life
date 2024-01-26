@@ -34,12 +34,12 @@ public class Main {
         System.out.println("-".repeat(grid[0].length));
     }
 
-    static void saveGrig(boolean[][] grid, byte scale, String file) throws IOException {
+    static void saveGrig(boolean[][] grid, int scale, String file) throws IOException {
         ImageIO.write(toImg(grid, scale), "png", new File(file));
     }
 
     @SuppressWarnings("SameParameterValue")
-    static void runFor(String folder, String filename, int duration, byte scale, Game game) throws IOException {
+    static void runFor(String folder, String filename, int duration, int scale, Game game) throws IOException {
         for (int i = 0; i < duration; i++) {
             saveGrig(game.nextIt(), scale, folder + "/" + filename + i + ".png");
         }
@@ -47,8 +47,8 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-//        runFor("games", "game", 1000, (byte) 1, new Game(new GameBuilder()
-//                .add("meta_pixel_galaxy.rle", 0, 0)
+        runFor("games", "game", 5, 30, new Game(new GameBuilder()
+                .add("meta_pixel_galaxy.rle", 0, 0)
 //                .add("meta_pixel_off.rle",    0, 0)
 //                .add("meta_pixel_off.rle", 2048, 0)
 //                .add("meta_pixel_off.rle", 4096, 0)
@@ -58,14 +58,14 @@ public class Main {
 //                .add("meta_pixel_off.rle",    0, 4096)
 //                .add("meta_pixel_off.rle", 2048, 4096)
 //                .add("meta_pixel_off.rle", 4096, 4096)
-//                .build(), new TimeProfiler()));
+                .build(), new TimeProfiler()));
 
-        boolean[][] grid = new GameBuilder()
-                .add("meta_pixel_on.rle", 0, 0)
-                .build();
+//        boolean[][] grid = new GameBuilder()
+//                .add("meta_pixel_galaxy.rle", 0, 0)
+//                .build();
 //        printGrid(grid);
 
-        System.out.println(Utils.gridToRle(grid));
+//        System.out.println(Utils.gridToRle(grid));
 
     }
 }
